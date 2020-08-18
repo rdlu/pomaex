@@ -1,0 +1,2 @@
+class PoMaEx:
+    pass
