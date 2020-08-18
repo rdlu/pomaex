@@ -16,3 +16,4 @@ It intends to be a simple library to scrap market exchange data and stash that d
 - POC for stashing data using pandas + parquet
 - POC for using stashed data
 - POC for scrapping just the differences
+- Build for PyPi
