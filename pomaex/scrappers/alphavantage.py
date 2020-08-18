@@ -3,6 +3,7 @@ import requests
 from requests.exceptions import HTTPError
 import urllib.parse
 
+
 class AlphaVantage(object):
     api_key = os.getenv('ALPHAVANTAGE_API_KEY')
     endpoint = "https://www.alphavantage.co/query?"
@@ -29,4 +30,4 @@ class AlphaVantage(object):
         return title[3:].lower().replace(' ', '_')
 
     def _clean_all_av_headers(self, metadata: dict) -> dict:
-        return { self._clean_av_header(key): value for key, value in metadata.items() }
+        return {self._clean_av_header(key): value for key, value in metadata.items()}
