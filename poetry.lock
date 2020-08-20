@@ -559,6 +559,17 @@ pygments = ">=2.6.0,<3.0.0"
 typing-extensions = ">=3.7.4,<4.0.0"
 
 [[package]]
+name = "rope"
+version = "0.17.0"
+description = "a python refactoring library..."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.extras]
+dev = ["pytest"]
+
+[[package]]
 name = "six"
 version = "1.15.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -674,7 +685,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.0"
 python-versions = "^3.8"
-content-hash = "ea5d54c206926ae4f5b55bafc59fe356fa789e2c66427ec05cd90caffe22fab3"
+content-hash = "a0652801308bdaa6e5c126440b25b2b3d2a74b547edb101a153749e019e0be4b"
 
 [metadata.files]
 appdirs = [
@@ -945,6 +956,9 @@ requests = [
 rich = [
     {file = "rich-5.2.1-py3-none-any.whl", hash = "sha256:a3c9332f47ca9469e523349fedb132b5b319ab14c2f9e74df87832add28be311"},
     {file = "rich-5.2.1.tar.gz", hash = "sha256:d791263dc505b635b75249dfc1991510d7eabb27047652e3209e98384365c9c9"},
+]
+rope = [
+    {file = "rope-0.17.0.tar.gz", hash = "sha256:658ad6705f43dcf3d6df379da9486529cf30e02d9ea14c5682aa80eb33b649e1"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},

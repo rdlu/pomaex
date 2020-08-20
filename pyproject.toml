@@ -39,6 +39,7 @@ bandit = "^1.6.2"
 isort = "^5.4.2"
 icecream = "^2.0.0"
 ipython = "^7.17.0"
+rope = "^0.17.0"
 
 [tool.poetry.scripts]
 "pomaex" = "pomaex.__main__:app"

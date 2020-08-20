@@ -13,21 +13,6 @@ class AlphaVantage(object):
     def __init__(self, api_key: str = api_key):
         self.api_key = api_key
 
-    def fetch_data(self, params: dict) -> dict:
-        response = None
-
-        url_params = urllib.parse.urlencode(params)
-        link = self.endpoint + url_params
-        try:
-            response = requests.get(link)
-            response.raise_for_status()
-            response = response.json()
-        except HTTPError as http_err:
-            print(f'HTTP error occurred: {http_err}')
-        except Exception as err:
-            print(f'Other error occurred: {err}')
-        return response
-
     def symbol_search(self, keyword: str = default_symbol) -> dict:
         params = {
             'function': 'SYMBOL_SEARCH',
@@ -35,7 +20,7 @@ class AlphaVantage(object):
             'apikey': self.api_key,
             'datatype': 'json'
         }
-        return self.fetch_data(params)
+        return self._fetch_data(params)
 
     def timeseries(self, symbol: str = default_symbol, period: str = 'daily',
                    interval: str = '5min', outputsize: str = 'compact') -> (dict, dict):
@@ -51,7 +36,7 @@ class AlphaVantage(object):
         if period == 'intraday':
             params['interval'] = interval
 
-        metadata, data = self.fetch_data(params)
+        metadata, data = self._fetch_data(params)
         metadata = self._clean_metadata_headers(metadata)
         data = self._clean_data_headers(data)
         return (data, metadata)
@@ -75,6 +60,21 @@ class AlphaVantage(object):
     def intraday(self, symbol: str = default_symbol,
                  interval: str = '5min', outputsize: str = 'compact') -> (dict, dict):
         return self.timeseries(symbol, period='intraday', interval=interval, outputsize=outputsize)
+
+    def _fetch_data(self, params: dict) -> dict:
+        response = None
+
+        url_params = urllib.parse.urlencode(params)
+        link = self.endpoint + url_params
+        try:
+            response = requests.get(link)
+            response.raise_for_status()
+            response = response.json()
+        except HTTPError as http_err:
+            print(f'HTTP error occurred: {http_err}')
+        except Exception as err:
+            print(f'Other error occurred: {err}')
+        return response
 
     def _clean_metadata_headers(self, metadata: dict) -> dict:
         return {self._clean_header(key): value for key, value in metadata.items()}
