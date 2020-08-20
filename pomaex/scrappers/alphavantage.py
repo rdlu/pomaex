@@ -7,6 +7,8 @@ import urllib.parse
 class AlphaVantage(object):
     api_key = os.getenv('ALPHAVANTAGE_API_KEY')
     endpoint = "https://www.alphavantage.co/query?"
+    default_symbol = 'MSFT'
+    default_format = 'json'
 
     def __init__(self, api_key: str = api_key):
         self.api_key = api_key
@@ -26,8 +28,40 @@ class AlphaVantage(object):
             print(f'Other error occurred: {err}')
         return response
 
-    def _clean_av_header(self, title: str) -> str:
-        return title[3:].lower().replace(' ', '_')
+    def symbol_search(self, keyword: str = default_symbol) -> dict:
+        params = {
+            'function': 'SYMBOL_SEARCH',
+            'keywords': keyword,
+            'apikey': self.api_key,
+            'datatype': 'json'
+        }
+        return self.fetch_data(params)
 
-    def _clean_all_av_headers(self, metadata: dict) -> dict:
-        return {self._clean_av_header(key): value for key, value in metadata.items()}
+    def timeseries(self, symbol: str = default_symbol, period: str = 'daily',
+                   interval: str = '5min', outputsize: str = 'compact') -> (dict, dict):
+
+        params = {
+            'apikey': self.api_key,
+            'symbol': symbol,
+            'function': 'TIME_SERIES_{}'.format(period.upper()),
+            'interval': interval,
+            'outputsize': outputsize,
+            'datatype': 'json'
+        }
+
+        metadata, data = self.fetch_data(params)
+        metadata = self._clean_metadata_headers(metadata)
+        data = self._clean_data_headers(data)
+        return (data, metadata)
+
+    def _clean_metadata_headers(self, metadata: dict) -> dict:
+        return {self._clean_header(key): value for key, value in metadata.items()}
+
+    def _clean_data_headers(self, data: dict) -> dict:
+        return {datapoint: self._clean_datapoint(values) for datapoint, values in data.items()}
+
+    def _clean_datapoint(self, data: dict) -> dict:
+        return self._clean_metadata_headers(data)
+
+    def _clean_header(self, title: str) -> str:
+        return title[3:].lower().replace(' ', '_')
