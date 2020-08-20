@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pomaex"
-version = "0.1.0"
+version = "0.1.1"
 description = "Portable Market Exchange {Repository,Scrapper,Format} for Python"
 authors = ["Rodrigo Dlugokenski <rddweb@gmail.com>"]
 license = "MIT"
@@ -38,6 +38,7 @@ black = "^19.10b0"
 bandit = "^1.6.2"
 isort = "^5.4.2"
 icecream = "^2.0.0"
+ipython = "^7.17.0"
 
 [tool.poetry.scripts]
 "pomaex" = "pomaex.__main__:app"

@@ -44,15 +44,37 @@ class AlphaVantage(object):
             'apikey': self.api_key,
             'symbol': symbol,
             'function': 'TIME_SERIES_{}'.format(period.upper()),
-            'interval': interval,
             'outputsize': outputsize,
             'datatype': 'json'
         }
+
+        if period == 'intraday':
+            params['interval'] = interval
 
         metadata, data = self.fetch_data(params)
         metadata = self._clean_metadata_headers(metadata)
         data = self._clean_data_headers(data)
         return (data, metadata)
+
+    def daily(self, symbol: str = default_symbol,
+              outputsize: str = 'compact') -> (dict, dict):
+        return self.timeseries(symbol, period='daily', outputsize=outputsize)
+
+    def daily_adjusted(self, symbol: str = default_symbol,
+                       outputsize: str = 'compact') -> (dict, dict):
+        return self.timeseries(symbol, period='daily_adjusted', outputsize=outputsize)
+
+    def weekly(self, symbol: str = default_symbol,
+               outputsize: str = 'compact') -> (dict, dict):
+        return self.timeseries(symbol, period='weekly', outputsize=outputsize)
+
+    def weekly_adjusted(self, symbol: str = default_symbol,
+                        outputsize: str = 'compact') -> (dict, dict):
+        return self.timeseries(symbol, period='weekly_adjusted', outputsize=outputsize)
+
+    def intraday(self, symbol: str = default_symbol,
+                 interval: str = '5min', outputsize: str = 'compact') -> (dict, dict):
+        return self.timeseries(symbol, period='intraday', interval=interval, outputsize=outputsize)
 
     def _clean_metadata_headers(self, metadata: dict) -> dict:
         return {self._clean_header(key): value for key, value in metadata.items()}
